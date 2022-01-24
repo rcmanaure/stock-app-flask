@@ -1,0 +1,43 @@
+version: '3.8'
+
+services:
+  flask:
+    build: ./src
+    # command: python manage.py run -h 0.0.0.0
+    volumes:
+      - ./src/:/usr/src/app/
+    ports:
+      - 5000:5000
+    environment:
+      - FLASK_APP=src/services/__init__.py
+      - FLASK_ENV=development
+      - DATABASE_URL=postgresql://postgres_flask:postgres_flask@db:5432/postgres_flask_dev
+    depends_on:
+      - db
+    networks:
+        flask_network:
+          aliases:
+            - flask.local
+
+  db:
+      image: postgres:13-alpine
+      volumes:
+        - postgres_data:/var/lib/postgresql/data/
+      ports:
+      - 5432:5432
+      environment:
+        - POSTGRES_USER=postgres_flask
+        - POSTGRES_PASSWORD=postgres_flask
+        - POSTGRES_DB=postgres_flask_dev
+      restart: always
+      networks:
+        flask_network:
+          aliases:
+            - postgres.local
+
+volumes:
+  postgres_data:
+
+networks:
+  flask_network:
+    driver: bridge
