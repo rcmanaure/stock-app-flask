@@ -1,7 +1,5 @@
-from email.policy import default
 from flask_sqlalchemy import SQLAlchemy
 from flask import Flask, jsonify
-import os
 from datetime import datetime
 
 app = Flask(__name__)
@@ -44,6 +42,6 @@ class Publication(db.Model):
         self.email = email
 
 
-@ app.route("/")
+@app.route("/")
 def hello_world():
     return jsonify(hello="world")
