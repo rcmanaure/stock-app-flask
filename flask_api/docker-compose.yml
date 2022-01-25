@@ -9,7 +9,7 @@ services:
     ports:
       - 5000:5000
     environment:
-      - FLASK_APP=src/services/__init__.py
+      - FLASK_APP=services
       - FLASK_ENV=development
       - DATABASE_URL=postgresql://postgres_flask:postgres_flask@db:5432/postgres_flask_dev
     depends_on:
