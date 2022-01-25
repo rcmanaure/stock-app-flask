@@ -1,3 +1,4 @@
+from email.policy import default
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
@@ -33,7 +34,7 @@ class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     fullname = db.Column(db.String(100), nullable=True)
     email = db.Column(db.String(100), unique=True, nullable=False)
-    photo = db.Column(db.String(100), nullable=True)
+    photo = db.Column(db.String(100), nullable=True, default='default.jpg')
     password = db.Column(db.String, nullable=False)
     active = db.Column(db.Boolean(), default=True, nullable=False)
     create_at = db.Column(db.DateTime, nullable=True, default=datetime.utcnow)
@@ -53,8 +54,6 @@ class Publication(db.Model):
     description = db.Column(db.String(100), nullable=True)
     priority = db.Column(db.String(100), nullable=True)
     status = db.Column(db.String(100), nullable=True)
-    password = db.Column(db.Integer, nullable=False)
-    active = db.Column(db.Boolean(), default=True, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     create_at = db.Column(db.DateTime, nullable=True, default=datetime.utcnow)
     updated_at = db.Column(db.DateTime, nullable=True,

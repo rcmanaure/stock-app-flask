@@ -18,6 +18,7 @@ def login_post():
     password = request.form.get('password')
     remember = True if request.form.get('remember') else False
 
+    # Find User in Database by Email.
     user = User.query.filter_by(email=email).first()
 
     # check if the user actually exists then hash the password,
@@ -46,24 +47,29 @@ def signup_post():
     name = request.form.get('name')
     password = request.form.get('password')
 
-    # Check if the user exist in Database.
-    user = User.query.filter_by(email=email).first()
+    # check if the fields are empty.
+    if not email and not password:
+        flash('Please check requirements and try again.')
+        return render_template('signup.html')
+    else:
+        # Check if the user exist in Database.
+        user = User.query.filter_by(email=email).first()
 
-    if user:
-        # if user exist, we want to redirect back to signup page.
-        flash('Email address already exists')
-        return redirect(url_for('auth.signup'))
+        if user:
+            # if user exist, we want to redirect back to signup page.
+            flash('Email address already exists')
+            return redirect(url_for('auth.signup'))
 
-    # create a new user with the form data. Hash the password.
-    new_user = User(email=email, fullname=name,
-                    password=generate_password_hash(password, method='sha256'))
+        # create a new user with the form data. Hash the password.
+        new_user = User(email=email, fullname=name,
+                        password=generate_password_hash(password, method='sha256'))
 
-    # Add the new user to the database
-    db.session.add(new_user)
-    db.session.commit()
+        # Add the new user to the database
+        db.session.add(new_user)
+        db.session.commit()
 
-    # Redirect to the login page.
-    return redirect(url_for('auth.login'))
+        # Redirect to the login page.
+        return redirect(url_for('auth.login'))
 
 
 @auth.route('/logout')

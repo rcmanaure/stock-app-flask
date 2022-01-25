@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block content %}    
+    <h2 class="subtitle">
+        Publications
+    </h2>    
+    {% for publication in publications %}
+    <article class="media content-section">
+        <div class="media-body">
+            <div class="article-metadata">
+                <a class="mr-2" href="#">{{ publication.user }}</a>
+                <small class="text-muted">{{ publication.create_at }}</small>
+                <small class="text-muted">Priority: {{ publication.priority }}.</small>
+                <small class="text-muted">Status: {{ publication.status }}.</small>
+            </div>
+            <h2><a class="article-title" href="#">{{ publication.title }}</a></h2>
+            <p class="article-content">{{ publication.description }}</p>
+        </div>
+    </article>
+    {% endfor %}
+    
+{% endblock %}
