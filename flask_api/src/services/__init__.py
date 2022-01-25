@@ -1,5 +1,5 @@
-from .main import main as main_blueprint
-from .auth import auth as auth_blueprint
+# from .main import main as main_blueprint
+# from .auth import auth as auth_blueprint
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
@@ -11,11 +11,11 @@ app.config.from_object("config.Config")
 # init SQLAlchemy so we can use it later in our models
 db = SQLAlchemy(app)
 
-# blueprint for auth routes in our app
-app.register_blueprint(auth_blueprint)
+# # blueprint for auth routes in our app
+# app.register_blueprint(auth_blueprint)
 
-# blueprint for non-auth parts of app
-app.register_blueprint(main_blueprint)
+# # blueprint for non-auth parts of app
+# app.register_blueprint(main_blueprint)
 
 
 class User(db.Model):
