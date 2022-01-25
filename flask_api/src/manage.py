@@ -1,7 +1,7 @@
 from flask.cli import FlaskGroup
 from services.main import main as main_blueprint
 from services.auth import auth as auth_blueprint
-from services import app, db
+from services.app import app, db
 
 
 cli = FlaskGroup(app)
