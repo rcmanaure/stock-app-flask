@@ -1,17 +1,17 @@
-# from flask.cli import FlaskGroup
+from flask.cli import FlaskGroup
 
-# from services import app, db
-
-
-# cli = FlaskGroup(app)
+from services import app, db
 
 
-# @cli.command("create_db")
-# def create_db():
-#     db.drop_all()
-#     db.create_all()
-#     db.session.commit()
+cli = FlaskGroup(app)
 
 
-# if __name__ == "__main__":
-#     cli()
+@cli.command("create_db")
+def create_db():
+    db.drop_all()
+    db.create_all()
+    db.session.commit()
+
+
+if __name__ == "__main__":
+    cli()

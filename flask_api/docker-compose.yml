@@ -12,6 +12,7 @@ services:
       - FLASK_APP=services
       - FLASK_ENV=development
       - DATABASE_URL=postgresql://postgres_flask:postgres_flask@db:5432/postgres_flask_dev
+      - SECRET_KEY=strongKey
     depends_on:
       - db
     networks:
