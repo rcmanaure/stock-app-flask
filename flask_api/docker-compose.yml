@@ -2,8 +2,7 @@ version: '3.8'
 
 services:
   flask:
-    build: ./src
-    # command: python manage.py run -h 0.0.0.0
+    build: ./src    
     volumes:
       - ./src/:/usr/src/app/
     ports:
@@ -14,7 +13,8 @@ services:
       - DATABASE_URL=postgresql://postgres_flask:postgres_flask@db:5432/postgres_flask_dev
       - SECRET_KEY=strongKey
     depends_on:
-      - db
+      db:
+        condition: service_healthy   
     networks:
         flask_network:
           aliases:
@@ -31,6 +31,10 @@ services:
         - POSTGRES_PASSWORD=postgres_flask
         - POSTGRES_DB=postgres_flask_dev
       restart: always
+      healthcheck:
+        test: ["CMD", "pg_isready","-d", "postgres_flask_dev","-U", "postgres_flask"]
+        interval: 30s
+        retries: 5
       networks:
         flask_network:
           aliases:
