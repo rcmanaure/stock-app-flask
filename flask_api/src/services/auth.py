@@ -20,15 +20,17 @@ def login_post():
 
     user = User.query.filter_by(email=email).first()
 
-    # check if the user actually exists
-    # take the user-supplied password, hash it, and compare it to the hashed password in the database
+    # check if the user actually exists then hash the password,
+    #  and compare it to the hashed  password in the database.
     if not user or not check_password_hash(user.password, password):
         flash('Please check your login details and try again.')
         # if the user doesn't exist or password is wrong, reload the page
         return redirect(url_for('auth.login'))
 
-    # if the above check passes, then we know the user has the right credentials
+    # If the remember button is True, save the credentials.
     login_user(user, remember=remember)
+
+    # if the above check passes, redirect to the main page.
     return redirect(url_for('main.profile'))
 
 
@@ -38,27 +40,29 @@ def signup():
 
 
 @auth.route('/signup', methods=['POST'])
+# Add an User.
 def signup_post():
     email = request.form.get('email')
     name = request.form.get('name')
     password = request.form.get('password')
 
-    # if this returns a user, then the email already exists in database
+    # Check if the user exist in Database.
     user = User.query.filter_by(email=email).first()
 
-    if user:  # if a user is found, we want to redirect back to signup page so user can try again
-
+    if user:
+        # if user exist, we want to redirect back to signup page.
         flash('Email address already exists')
         return redirect(url_for('auth.signup'))
 
-    # create a new user with the form data. Hash the password so the plaintext version isn't saved.
+    # create a new user with the form data. Hash the password.
     new_user = User(email=email, fullname=name,
                     password=generate_password_hash(password, method='sha256'))
 
-    # add the new user to the database
+    # Add the new user to the database
     db.session.add(new_user)
     db.session.commit()
 
+    # Redirect to the login page.
     return redirect(url_for('auth.login'))
 
 

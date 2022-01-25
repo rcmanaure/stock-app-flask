@@ -10,6 +10,6 @@ def index():
 
 
 @main.route('/profile')
-@login_required
+@login_required  # Must be log in to see main page.
 def profile():
     return render_template('profile.html', name=current_user.email)

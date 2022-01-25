@@ -15,6 +15,7 @@ app.register_blueprint(main_blueprint)
 
 
 @cli.command("create_db")
+# To create the Database and Tables.
 def create_db():
     db.drop_all()
     db.create_all()
