@@ -12,11 +12,11 @@
     <div class="media">
         <img class="rounded-circle account-img" src="{{ photo }}">
         <div class="media-body">
-            <h2 class="account-heading">{{current_user.user}}</h2>
+            <h2 class="account-heading">{{current_user.username}}</h2>
             <p class="text-secondary">{{current_user.email}}</p>
         </div>
     </div>
-    <form method="POST" action="/profile">
+    <form method="POST" action="/profile" enctype="multipart/form-data">
         <div class="column is-4 is-offset-4">
             <h3 class="title">Account Info</h3>
             <div class="box">

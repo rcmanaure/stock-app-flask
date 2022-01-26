@@ -34,7 +34,8 @@ class User(db.Model, UserMixin,):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(100), nullable=True)
     email = db.Column(db.String(100), unique=True, nullable=False)
-    photo = db.Column(db.String(100), nullable=True, default='default.jpg')
+    image_file = db.Column(db.String(100), nullable=True,
+                           default='default.png')
     password = db.Column(db.String, nullable=False)
     active = db.Column(db.Boolean(), default=True, nullable=False)
     create_at = db.Column(db.DateTime, nullable=True, default=datetime.utcnow)

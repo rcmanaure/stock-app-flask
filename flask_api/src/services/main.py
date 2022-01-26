@@ -47,6 +47,7 @@ def index():
 
 
 def save_picture(form_picture):
+    # To save new profile pic.
     random_hex = secrets.token_hex(8)
     _, f_ext = os.path.splitext(form_picture.filename)
     picture_fn = random_hex + f_ext
@@ -78,7 +79,7 @@ def profile():
         form.username.data = current_user.username
         form.email.data = current_user.email
     photo = url_for(
-        'static', filename='profile_pics/' + current_user.photo)
+        'static', filename='profile_pics/' + current_user.image_file)
     return render_template('profile.html', name=current_user.email, photo=photo, form=form)
 
 
