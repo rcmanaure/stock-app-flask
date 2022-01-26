@@ -1,21 +1,22 @@
 from flask import Blueprint, render_template, redirect, url_for, request, flash
-
 from services.forms.forms import RegistrationForm, LoginForm
 from .app import db, User
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_user, logout_user, login_required
 
-
+# Init the Blueprints of be used in the authorization routes.
 auth = Blueprint('auth', __name__)
 
 
 @auth.route('/login')
+# Show Page to fill the credentials to Log In.
 def login():
     form = LoginForm()
     return render_template('login.html', form=form)
 
 
 @auth.route('/login', methods=['POST'])
+# Logic to POST the credentials and Login.
 def login_post():
     email = request.form.get('email')
     password = request.form.get('password')
@@ -39,13 +40,14 @@ def login_post():
 
 
 @auth.route('/signup')
+# Show the Registration Page.
 def signup():
     form = RegistrationForm()
     return render_template('signup.html', form=form)
 
 
 @auth.route('/signup', methods=['POST'])
-# Add an User.
+# Logic to add an user.
 def signup_post():
     email = request.form.get('email')
     name = request.form.get('username')
@@ -66,7 +68,8 @@ def signup_post():
 
         # create a new user with the form data. Hash the password.
         new_user = User(email=email, username=name,
-                        password=generate_password_hash(password, method='sha256'))
+                        password=generate_password_hash(password,
+                                                        method='sha256'))
 
         # Add the new user to the database
         db.session.add(new_user)
@@ -78,6 +81,7 @@ def signup_post():
 
 
 @auth.route('/logout')
+# To log out.
 @login_required
 def logout():
     logout_user()

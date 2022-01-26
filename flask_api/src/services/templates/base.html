@@ -23,6 +23,11 @@
                                 Publications
                             </a>
                             {% if current_user.is_authenticated %}
+                            <a href="{{ url_for('main.new_post') }}" class="navbar-item">
+                                Add Publication
+                            </a>
+                            {% endif %}                          
+                            {% if current_user.is_authenticated %}
                             <a href="{{ url_for('main.profile') }}" class="navbar-item">
                                 Profile
                             </a>

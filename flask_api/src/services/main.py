@@ -1,15 +1,18 @@
-from flask import Blueprint, render_template, url_for, flash, redirect, request, abort
+from flask import (Blueprint, render_template, url_for,
+                   flash, redirect, request, abort)
 from flask_login import login_required, current_user
 from services.forms.forms import UpdateAccountForm, PostForm
-from .app import db, app, Post
+from .app import User, db, app, Post
 import os
 import secrets
 from PIL import Image
 
+# Init the Blueprints of be used in the mains routes.
 main = Blueprint('main', __name__)
 
 
 @main.route('/')
+# Show the publications in the home page.
 def publication():
     publications = Post.query.all()
     return render_template('publication.html', publications=publications)
@@ -31,8 +34,22 @@ def save_picture(form_picture):
     return picture_fn
 
 
+@main.route("/profile/delete", methods=['POST', 'GET'])
+# To delete current logged User.
+@login_required  # Must be log in.
+def delete_profile():
+    user = User.query.filter_by().first()
+    if user.id != current_user.id:
+        abort(403)
+    db.session.delete(user)
+    db.session.commit()
+    flash('Your account has been deleted!', 'success')
+    return redirect(url_for('main.publication'))
+
+
 @main.route('/profile', methods=['POST', 'GET'])
-@login_required  # Must be log in to see main page.
+# To update the user account.
+@login_required  # Must be log in.
 def profile():
     form = UpdateAccountForm()
     if form.validate_on_submit():
@@ -49,30 +66,42 @@ def profile():
         form.email.data = current_user.email
     photo = url_for(
         'static', filename='profile_pics/' + current_user.image_file)
-    return render_template('profile.html', name=current_user.email, photo=photo, form=form)
+    return render_template('profile.html',
+                           name=current_user.email,
+                           photo=photo, form=form
+                           )
 
 
-@app.route("/post/new", methods=['GET', 'POST'])
+@main.route("/post/new", methods=['GET', 'POST'])
+# To add a new Publication.
 @login_required
 def new_post():
     form = PostForm()
     if form.validate_on_submit():
         post = Post(title=form.title.data,
-                    content=form.content.data, user_id=current_user.id)
+                    content=form.content.data,
+                    user_id=current_user.id,
+                    author=current_user.username
+                    )
         db.session.add(post)
         db.session.commit()
         flash('Your post has been created!', 'success')
         return redirect(url_for('main.publication'))
-    return render_template('create_post.html', form=form, legend='New Publication')
+    return render_template('create_post.html',
+                           form=form,
+                           legend='New Publication'
+                           )
 
 
-@app.route("/post/<int:id>")
+@main.route("/post/<int:id>")
+# To get a specific Publication.
 def post(id):
     publication = Post.query.get_or_404(id)
     return render_template('post.html',  publication=publication)
 
 
-@app.route("/post/<int:id>/update", methods=['GET', 'POST'])
+@main.route("/post/<int:id>/update", methods=['GET', 'POST'])
+# To update a specific Publication.
 @login_required
 def update_post(id):
     post = Post.query.get_or_404(id)
@@ -84,7 +113,7 @@ def update_post(id):
         post.content = form.content.data
         db.session.commit()
         flash('Your post has been updated!', 'success')
-        return redirect(url_for('post', id=post.id))
+        return redirect(url_for('main.post', id=post.id))
     elif request.method == 'GET':
         form.title.data = post.title
         form.content.data = post.content
@@ -92,7 +121,8 @@ def update_post(id):
                            form=form, legend='Update Post')
 
 
-@app.route("/post/<int:post_id>/delete", methods=['POST', 'GET'])
+@main.route("/post/<int:post_id>/delete", methods=['POST'])
+# To delete a specific Publication.
 @login_required
 def delete_post(post_id):
     post = Post.query.get_or_404(post_id)
