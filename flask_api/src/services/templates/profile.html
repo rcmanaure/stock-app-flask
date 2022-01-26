@@ -1,6 +1,13 @@
 {% extends "base.html" %}
 
 {% block content %}
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+<div class="notification is-danger">
+    {{ messages[0] }}.</a>.
+</div>
+{% endif %}
+{% endwith %}
 <!-- <div class="content-section"> -->
     <div class="media">
         <img class="rounded-circle account-img" src="{{ photo }}">
@@ -23,6 +30,7 @@
                         </div>
                     </div>
     
+
                     <div class="field">
                         <div class="control">
                             <!-- <input class="input is-large" type="email" name="email" placeholder="Email" autofocus=""> -->
@@ -30,7 +38,17 @@
                             {{form.username(class="input is-large")}}
                         </div>
                     </div>
-    
+                    <div class="field">
+                        <div class="control">
+                            {{ form.picture.label() }}
+                            {{ form.picture(class="form-control-file") }}
+                            {% if form.picture.errors %}
+                            {% for error in form.picture.errors %}
+                            <span class="text-danger">{{ error }}</span></br>
+                            {% endfor %}
+                            {% endif %}
+                        </div>
+                    </div>
                 
     
                     <button class="button is-block is-info is-large is-fullwidth">{{form.submit()}}</button>
