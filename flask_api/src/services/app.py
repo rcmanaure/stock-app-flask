@@ -3,7 +3,8 @@ from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 from flask_login import UserMixin
 from flask_login import LoginManager
-
+from flasgger import Swagger
+from services.config.swagger import template, swagger_config
 # Init Flask.
 app = Flask(__name__)
 
@@ -19,6 +20,9 @@ db.init_app(app)
 login_manager = LoginManager()
 login_manager.login_view = 'auth.login'
 login_manager.init_app(app)
+
+# Init Swagger
+Swagger(app, config=swagger_config, template=template)
 
 
 @login_manager.user_loader

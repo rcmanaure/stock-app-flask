@@ -6,16 +6,10 @@ from .app import User, db, app, Post
 import os
 import secrets
 from PIL import Image
+from flasgger import swag_from
 
 # Init the Blueprints of be used in the mains routes.
 main = Blueprint('main', __name__)
-
-
-@main.route('/')
-# Show the publications in the home page.
-def publication():
-    publications = Post.query.all()
-    return render_template('publication.html', publications=publications)
 
 
 def save_picture(form_picture):
@@ -47,9 +41,18 @@ def delete_profile():
     return redirect(url_for('main.publication'))
 
 
-@main.route('/profile', methods=['POST', 'GET'])
+@main.route('/profile', methods=['GET'])
+# Show the publications in the home page.
+@swag_from('./docs/profile/profile_user.yaml')
+def profile_user():
+    form = UpdateAccountForm()
+    return render_template('profile.html', form=form)
+
+
+@main.route('/profile', methods=['POST'])
 # To update the user account.
 @login_required  # Must be log in.
+@swag_from('./docs/profile/profile.yaml')
 def profile():
     form = UpdateAccountForm()
     if form.validate_on_submit():
@@ -72,9 +75,18 @@ def profile():
                            )
 
 
-@main.route("/post/new", methods=['GET', 'POST'])
+@main.route('/', methods=['GET'])
+# Show the publications in the home page.
+@swag_from('./docs/publications/posts.yaml')
+def publication():
+    publications = Post.query.all()
+    return render_template('publication.html', publications=publications)
+
+
+@main.route("/post/new", methods=['POST'])
 # To add a new Publication.
 @login_required
+@swag_from('./docs/publications/post.yaml')
 def new_post():
     form = PostForm()
     if form.validate_on_submit():
@@ -103,6 +115,7 @@ def post(id):
 @main.route("/post/<int:id>/update", methods=['GET', 'POST'])
 # To update a specific Publication.
 @login_required
+@swag_from('./docs/publications/update_post.yaml')
 def update_post(id):
     post = Post.query.get_or_404(id)
     if post.user_id != current_user.id:
@@ -124,6 +137,7 @@ def update_post(id):
 @main.route("/post/<int:post_id>/delete", methods=['POST'])
 # To delete a specific Publication.
 @login_required
+@swag_from('./docs/publications/delete_post.yaml')
 def delete_post(post_id):
     post = Post.query.get_or_404(post_id)
     if post.user_id != current_user.id:

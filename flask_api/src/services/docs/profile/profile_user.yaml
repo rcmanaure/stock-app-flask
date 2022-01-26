@@ -1,0 +1,13 @@
+Show the User Profile
+---
+tags:
+  - Profile
+parameters:
+  - name: body
+    description: Show the User Profile.
+
+responses:
+  200:
+    description: When a user successfully update
+  400:
+    description: Fails to Register due to bad request data

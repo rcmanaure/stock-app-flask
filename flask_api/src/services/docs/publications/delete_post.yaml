@@ -1,0 +1,27 @@
+Delete a Publication
+---
+tags:
+  - Publications
+parameters:
+  - name: body
+    description: The URL must contain an id.
+      example= /post/<int:post_id>/delete
+    in: body
+    required: true
+    schema:
+      type: object
+      required:
+        - "id"
+      properties:
+        id:
+          type: "integer"
+          example: "1"
+responses:
+  200:
+    description: When a user successfully delete a publication
+
+  400:
+    description: Fails to add due to bad request data
+
+  401:
+    description: A user supplies incorrect data

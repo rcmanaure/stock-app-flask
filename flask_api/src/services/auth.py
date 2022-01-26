@@ -3,7 +3,7 @@ from services.forms.forms import RegistrationForm, LoginForm
 from .app import db, User
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_user, logout_user, login_required
-
+from flasgger import swag_from
 # Init the Blueprints of be used in the authorization routes.
 auth = Blueprint('auth', __name__)
 
@@ -16,6 +16,7 @@ def login():
 
 
 @auth.route('/login', methods=['POST'])
+@swag_from('./docs/auth/login.yaml')
 # Logic to POST the credentials and Login.
 def login_post():
     email = request.form.get('email')
@@ -47,8 +48,10 @@ def signup():
 
 
 @auth.route('/signup', methods=['POST'])
+@swag_from('./docs/auth/register.yaml')
 # Logic to add an user.
 def signup_post():
+    form = RegistrationForm()
     email = request.form.get('email')
     name = request.form.get('username')
     password = request.form.get('password')
@@ -56,7 +59,7 @@ def signup_post():
     # check if the fields are empty.
     if not email and not password:
         flash('Please check requirements and try again.')
-        return render_template('signup.html')
+        return render_template('signup.html', form=form)
     else:
         # Check if the user exist in Database.
         user = User.query.filter_by(email=email).first()
@@ -64,7 +67,7 @@ def signup_post():
         if user:
             # if user exist, we want to redirect back to signup page.
             flash('Email address already exists')
-            return redirect(url_for('auth.signup'))
+            return redirect(url_for('auth.signup'), form=form)
 
         # create a new user with the form data. Hash the password.
         new_user = User(email=email, username=name,

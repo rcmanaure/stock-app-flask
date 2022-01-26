@@ -1,0 +1,30 @@
+Add a Publication
+---
+tags:
+  - Publications
+parameters:
+  - name: body
+    description: The body should contain title and description.
+    in: body
+    required: true
+    schema:
+      type: object
+      required:
+        - "title"
+        - "description"
+      properties:
+        title:
+          type: "string"
+          example: "Publication 1"
+        description:
+          type: "string"
+          example: "Content 1"
+responses:
+  200:
+    description: When a user successfully add a publication
+
+  400:
+    description: Fails to add due to bad request data
+
+  401:
+    description: A user supplies incorrect data

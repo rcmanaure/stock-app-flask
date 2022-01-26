@@ -1,0 +1,27 @@
+User Profile
+---
+tags:
+  - Profile
+parameters:
+  - name: body
+    description: The body should contain the email and username to update.
+    in: body
+    required: true
+    schema:
+      type: object
+      required:
+        - "email"
+        - "username"
+      properties:
+        email:
+          type: "email"
+          example: "developer@gmail.com"
+        username:
+          type: "username"
+          example: "usernamex"
+
+responses:
+  200:
+    description: When a user successfully update
+  400:
+    description: Fails to Register due to bad request data
