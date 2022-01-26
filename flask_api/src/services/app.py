@@ -12,7 +12,7 @@ app = Flask(__name__)
 app.config.from_object("config.Config")
 
 # Init SQLAlchemy so we can use it later in our models
-db = SQLAlchemy()
+db = SQLAlchemy(app)
 db.init_app(app)
 
 # Flask-Login config.
@@ -29,10 +29,10 @@ def load_user(user_id):
     return User.query.get(int(user_id))
 
 
-class User(UserMixin, db.Model):
+class User(db.Model, UserMixin,):
 
     id = db.Column(db.Integer, primary_key=True)
-    fullname = db.Column(db.String(100), nullable=True)
+    username = db.Column(db.String(100), nullable=True)
     email = db.Column(db.String(100), unique=True, nullable=False)
     photo = db.Column(db.String(100), nullable=True, default='default.jpg')
     password = db.Column(db.String, nullable=False)
@@ -41,9 +41,9 @@ class User(UserMixin, db.Model):
     updated_at = db.Column(db.DateTime, nullable=True,
                            default=datetime.utcnow())
 
-    def __init__(self, email, fullname, password):
+    def __init__(self, email, username, password):
         self.email = email
-        self.fullname = fullname
+        self.username = username
         self.password = password
 
 
