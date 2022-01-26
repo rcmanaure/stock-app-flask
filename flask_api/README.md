@@ -6,7 +6,7 @@
 
 docker-compose build
 
-## To run one container and start the Flask REST API :
+## To run docker and start the Flask REST API :
 
 - docker-compose up
 - Go to http://localhost:5000/
