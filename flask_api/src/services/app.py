@@ -1,4 +1,3 @@
-from email.policy import default
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
@@ -40,7 +39,7 @@ class User(db.Model, UserMixin,):
     active = db.Column(db.Boolean(), default=True, nullable=False)
     create_at = db.Column(db.DateTime, nullable=True, default=datetime.utcnow)
     updated_at = db.Column(db.DateTime, nullable=True,
-                           default=datetime.utcnow())
+                           default=datetime.utcnow)
 
     def __init__(self, email, username, password):
         self.email = email
@@ -48,17 +47,16 @@ class User(db.Model, UserMixin,):
         self.password = password
 
 
-class Publication(db.Model):
-
+class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(100), nullable=True)
-    description = db.Column(db.String(100), nullable=True)
-    priority = db.Column(db.String(100), nullable=True)
-    status = db.Column(db.String(100), nullable=True)
+    title = db.Column(db.String(100), nullable=False)
+    content = db.Column(db.Text, nullable=False)
+    priority = db.Column(db.String(100), default='medium', nullable=True)
+    status = db.Column(db.String(100), default='medium', nullable=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     create_at = db.Column(db.DateTime, nullable=True, default=datetime.utcnow)
     updated_at = db.Column(db.DateTime, nullable=True,
-                           default=datetime.utcnow())
+                           default=datetime.utcnow)
 
-    def __init__(self, description):
-        self.description = description
+    def __repr__(self):
+        return f"Post('{self.title}', '{self.date_posted}')"
