@@ -1,4 +1,4 @@
-# Flas Project by Ruben Castillo
+# FlasK Project by Ruben Castillo
 
 ## DOCKER COMMANDS TO USE:
 
@@ -31,13 +31,3 @@ docker stop <container hash>
 ## Swagger URL:
 
 http://localhost:5000/#/
-
-## To make Git check out files with Unix-style file endings on Windows - at least temporarily - use:
-
-eg error: identity_1 | /usr/bin/env: ‘bash\r’: No such file or directory
-
-git config --global core.autocrlf false
-
-Then run your installation commands involving git clone again.
-
-To restore Git's behavior later, run git config --global core.autocrlf true
