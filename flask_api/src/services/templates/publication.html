@@ -9,12 +9,12 @@
         <div class="media-body">
             <div class="article-metadata">
                 <a class="mr-2" href="#">{{ publication.user }}</a>
-                <small class="text-muted">{{ publication.create_at }}</small>
+                <small class="text-muted">{{ publication.create_at.strftime('%Y-%m-%d %H:%M:%S') }}</small>
                 <small class="text-muted">Priority: {{ publication.priority }}.</small>
                 <small class="text-muted">Status: {{ publication.status }}.</small>
             </div>
-            <h2><a class="article-title" href="#">{{ publication.title }}</a></h2>
-            <p class="article-content">{{ publication.description }}</p>
+            <h2><a class="article-title" href="/post/{{ publication.id}}">{{ publication.title }}</a></h2>
+            <p class="article-content">{{ publication.content }}</p>
         </div>
     </article>
     {% endfor %}
