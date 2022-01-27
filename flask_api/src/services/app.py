@@ -7,6 +7,7 @@ from flasgger import Swagger
 from services.config.swagger import template, swagger_config
 # Init Flask.
 app = Flask(__name__)
+app_test = app
 
 #  Config Variables to be used for Flask.
 app.config.from_object("config.Config")

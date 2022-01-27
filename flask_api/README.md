@@ -36,3 +36,7 @@ docker stop <container hash>
 ## Swagger URL:
 
 http://localhost:5000/#/
+
+## TO run the tests with Pytest:
+
+pytest
