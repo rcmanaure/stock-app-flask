@@ -75,10 +75,10 @@ class Post(db.Model):
 
 class Transaction(db.Model):
     id = db.Column(db.Integer,primary_key=True)    
-    ticker = db.Column(db.String(15),index=True)
-    name = db.Column(db.String(30))
+    ticker = db.Column(db.String(30),index=True)
+    name = db.Column(db.String(100))
     qty = db.Column(db.Integer)
-    last_price = db.Column(db.Float)    
+    last_price = db.Column(db.String(50))    
     create_at = db.Column(db.DateTime, nullable=True, default=datetime.utcnow)
 
     def __repr__(self):
