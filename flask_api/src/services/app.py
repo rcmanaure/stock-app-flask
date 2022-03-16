@@ -78,7 +78,7 @@ class Transaction(db.Model):
     ticker = db.Column(db.String(15),index=True)
     name = db.Column(db.String(30))
     qty = db.Column(db.Integer)
-    price = db.Column(db.Float)    
+    last_price = db.Column(db.Float)    
     create_at = db.Column(db.DateTime, nullable=True, default=datetime.utcnow)
 
     def __repr__(self):
