@@ -1,0 +1,17 @@
+Show all the stocks.
+---
+tags:
+  - Stocks
+parameters:
+  
+  - description: Show all the stocks.
+
+responses:
+  200:
+    description: When a user successfully add a publication
+
+  400:
+    description: Fails to add due to bad request data
+
+  401:
+    description: A user supplies incorrect data

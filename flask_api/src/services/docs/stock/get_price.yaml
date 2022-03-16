@@ -1,0 +1,13 @@
+Show the Stock prices
+---
+tags:
+  - Stocks
+parameters:
+  - name: body
+    description: Show the Stock prices
+
+responses:
+  200:
+    description: Stock price
+  400:
+    description: Fails to Show the Stock prices due to bad request data

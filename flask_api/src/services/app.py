@@ -72,3 +72,14 @@ class Post(db.Model):
 
     def __repr__(self):
         return f"Post('{self.title}', '{self.content}')"
+
+class Transaction(db.Model):
+    id = db.Column(db.Integer,primary_key=True)    
+    ticker = db.Column(db.String(15),index=True)
+    name = db.Column(db.String(30))
+    qty = db.Column(db.Integer)
+    price = db.Column(db.Float)    
+    create_at = db.Column(db.DateTime, nullable=True, default=datetime.utcnow)
+
+    def __repr__(self):
+        return f"Transaction ('{self.id}')"
