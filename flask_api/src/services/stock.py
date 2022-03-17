@@ -10,14 +10,21 @@ import datetime
 stock = Blueprint('stock', __name__)
 
     #   Profit/Loss in percentage
-def profit_loss_pct( actual_price, price, symbol):        
-    profit_loss_prcnt = (actual_price - price)        
-    if profit_loss_prcnt < 0:
-        loss = symbol+" = "+ str(round(profit_loss_prcnt*100/price,2))+"%"
-        return loss
-    else:        
-        profit = symbol + " = " +  str(round(profit_loss_prcnt*100/price,2)) +"%" 
+def profit_loss_pct( price_bought, actual_price, symbol):        
+    profit_loss_prcnt = (actual_price - price_bought)    
+    if  actual_price == 0:       
+        profit = symbol + " = " +  str(0) +"%" 
         return profit
+    else:
+        if profit_loss_prcnt < 0:
+            loss = symbol+" = "+ str(round(profit_loss_prcnt*100/price_bought,2))+"%"           
+
+            return loss
+        else:        
+            profit = symbol + " = " +  str(round(profit_loss_prcnt*100/price_bought,2)) +"%"            
+
+            return profit
+        
     
 # Get the data from the https://api.nasdaq.com/api/
 def get_data(symbol:str):   
@@ -107,53 +114,51 @@ def list_shares():
     stocks = stock_schema.dumps(all_stocks)               
     shares = json.loads(stocks)  
     
-    # try:
-    #     list_share = get_prices(shares)    
-    #     list_price = []
-    #     for i in list_share:         
-    #         list_price.append(i)     
-    # except Exception:
-    #     return 'Connection Error.(too many request to the api or internet down)'  
+    try:
+        list_share = get_prices(shares)    
+        list_price = []
+        for i in list_share:         
+            list_price.append(i)     
+    except Exception:
+        return 'Connection Error.(too many request to the api or internet down)'  
     
-    # ref_prices = []
-    # profit = []
-    # for i in list_price:
-    #     ref_prices.append(i['ticker']+ ' = '+ ' #Lowest price= ' + str(i['results'][0]['l']) + ' #Highest price= ' + str(i['results'][0]['h']) +' #Average price= ' + str(i['results'][0]['vw']))  
-         
-    ref_prices = [{"actual_price": 600}]     
+    ref_prices = []    
+    for i in list_price:
+        ref_prices.append(i['ticker']+ ' = '+ ' #Lowest= $' + str(i['results'][0]['l']) + ' #Highest= $' + str(i['results'][0]['h']) +' #Average= $' + str(round(i['results'][0]['vw'],2))) 
+        
+        
     share = []
     money = []    
     last_price = []
     profit = []
+    
+    cont = 0
     for i in shares:
-        for x in ref_prices:
-            # append to share list the symbol and price and  split the $ sign
-            share.append(i['symbol'] +' : ' + i['last_price'])        
-            splited = str(i['last_price']).split('$')
-            
-            # Convert str to float and  append to last_price list
-            price_splited = float(splited[1])       
-            last_price.append(price_splited)
-            
-            # calculate the profit and loss of shares and append to profit list
-            profit_loss = profit_loss_pct(price_splited, x['actual_price'],i['symbol'])        
-            profit.append(profit_loss)
-            
-            # calculate Current value of the shares holding and append to money list
-            sub_total = price_splited*i['qty']        
-            money.append(i['symbol'] + ' = '+'$ '+ str(sub_total) + '   Qty: ' + str(i['qty'])) 
-            
-             
-   
-    
-    
-    
+        cont = cont + 1      
+        # append to share list the symbol and price and  split the $ sign
+        share.append(i['symbol'] +' : ' + i['last_price'])        
+        splited = str(i['last_price']).split('$')
+        
+        # Convert str to float and  append to last_price list
+        price_bought = float(splited[1])       
+        last_price.append(price_bought)        
+        
+        # calculate Current value of the shares holding and append to money list
+        sub_total = list_price[cont -1]['results'][0]['c']*i['qty']        
+        money.append(i['symbol'] + ' = '+'$ '+ str(sub_total) + '   Qty: ' + str(i['qty']))   
+        
+        # calculate the profit and loss of shares and append to profit list     
+        profit_loss = profit_loss_pct(price_bought,list_price[cont -1]['results'][0]['c'],i['symbol'])        
+
+        profit.append(profit_loss)     
  
-    
-    
     response = make_response(
                 jsonify(
-                    {"data": shares, "value_shares":share, 'current_value_shares_holding': money,"Profit/loss": profit}, 
+                    {"data": shares, "value_shares":share,
+                     'current_value_shares_holding': money,
+                     "Profit/loss": profit,
+                     "Current day reference prices:":ref_prices
+                     }, 
                 ),
                 200,
             )
