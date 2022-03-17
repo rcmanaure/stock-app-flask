@@ -75,7 +75,7 @@ class Post(db.Model):
 
 class Transaction(db.Model):
     id = db.Column(db.Integer,primary_key=True)    
-    ticker = db.Column(db.String(30),index=True)
+    symbol = db.Column(db.String(30),index=True)
     name = db.Column(db.String(100))
     qty = db.Column(db.Integer)
     last_price = db.Column(db.String(50))    
