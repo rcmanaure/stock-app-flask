@@ -6,10 +6,21 @@
 
 docker-compose build
 
-## To run docker and start the Flask REST API :
+## To run docker and start the containers :
 
-- docker-compose up
-- Go to http://localhost:5000/
+- docker-compose up -d (use -d flag for daemonized version)
+## Swagger URL to see the endpoints:
+
+http://localhost:5000/swagger
+
+## Virtual trading Stock endpoints:
+### method POST to buy and method PUT to sell(Check Swagger to how use the enpoints.)
+
+http://localhost:5000/share
+### List the shares owned(Profit/Loss,Held shares,Current value of the shares and Current day reference prices)
+http://localhost:5000/list-shares
+### List the historic price of shares
+http://localhost:5000//stock-prices
 
 ## To run one container :
 
@@ -33,9 +44,6 @@ docker stop <container hash>
 
 "See docker-compose for more details"
 
-## Swagger URL:
-
-http://localhost:5000/#/
 
 ## TO run the tests with Pytest:
 
