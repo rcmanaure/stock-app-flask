@@ -13,7 +13,7 @@ docker-compose build
 
 http://localhost:5000/swagger
 
-## Virtual trading Stock endpoints:
+## Virtual trading Stock API endpoints:
 ### method POST to buy and method PUT to sell(Check Swagger to how use the endpoints.)
 
 http://localhost:5000/share
