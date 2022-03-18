@@ -9,7 +9,7 @@ docker-compose build
 ## To run docker and start the containers :
 
 - docker-compose up -d (use -d flag for daemonized version)
-## Swagger URL to see the endpoints:
+## Swagger URL to how use the endpoints:
 
 http://localhost:5000/swagger
 
@@ -20,7 +20,7 @@ http://localhost:5000/share
 ### List the shares owned(Profit/Loss,Held shares,Current value of the shares and Current day reference prices)
 http://localhost:5000/list-shares
 ### List the historic price of shares
-http://localhost:5000//stock-prices
+http://localhost:5000/stock-prices
 
 # Bonus Blog REST API (Check Swagger to how use the endpoints.)
 http://localhost:5000/
