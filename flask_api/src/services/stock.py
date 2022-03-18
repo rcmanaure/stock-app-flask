@@ -5,11 +5,27 @@ from .app import db, Transaction
 from webargs.flaskparser import use_args
 from marshmallow import fields
 import json
+from flasgger import swag_from
+
+
+
 
 # Init the Blueprints of be used in the stock routes.
 stock = Blueprint('stock', __name__)
 
-@stock.route('/share/', methods=['POST', 'PUT'])
+@stock.route('/share', methods=['POST'])
+@swag_from('./docs/stock/buy.yaml')
+def buy_swagger():
+    """Swagger help"""
+    pass
+
+@stock.route('/share', methods=['PUT'])
+@swag_from('./docs/stock/sell.yaml')
+def sell_swagger():
+    """Swagger help"""
+    pass
+
+@stock.route('/share', methods=['POST', 'PUT'])
 @use_args({'symbol':fields.String(),'qty':fields.Integer() })
 # Buy/Sell a number of shares of a certain stock via its symbol
 def buy_shares(args:dict): 
@@ -57,8 +73,10 @@ def buy_shares(args:dict):
     except Exception: 
         return 'Connection Error.(too many request to the api or internet down)'
 
-@stock.route('/list-shares', methods=['GET'])
+
 # Get the list of shares owned
+@stock.route('/list-shares', methods=['GET'])
+@swag_from('./docs/stock/stocks.yaml')
 def list_shares():
     # Get forom the DB the data
     stock_schema = StockResponseSchema(many=True)
@@ -122,6 +140,7 @@ def list_shares():
     
 
 @stock.route('/stock-prices', methods=['GET'])
+@swag_from('./docs/stock/get_price.yaml')
 # Get the historic price of a stock you bought
 def stock_price():
     

@@ -1,4 +1,4 @@
-Show all the stocks.
+Show all the stocks owned.
 ---
 tags:
   - Stocks
@@ -8,10 +8,10 @@ parameters:
 
 responses:
   200:
-    description: When a user successfully add a publication
+    description: Listed Successfully 
 
   400:
-    description: Fails to add due to bad request data
+    description: Fails to list due to bad request data
 
   401:
     description: A user supplies incorrect data

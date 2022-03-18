@@ -1,0 +1,30 @@
+Buy shares
+---
+tags:
+  - Stocks
+parameters:
+  - name: body
+    description: The body should contain symbol and quantity.
+    in: body
+    required: true
+    schema:
+      type: object
+      required:
+        - "symbol"
+        - "quantity"
+      properties:
+        symbol:
+          type: "string"
+          example: "Symbol 1"
+        quantity:
+          type: "integer"
+          example: "Quantity 1"
+responses:
+  200:
+    description: When a buy  successfully 
+
+  400:
+    description: Fails to buy due to bad request data
+
+  401:
+    description: A user supplies incorrect data
